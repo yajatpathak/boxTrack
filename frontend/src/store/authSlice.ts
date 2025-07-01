@@ -1,24 +1,32 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../services/constants";
+import isTokenValid from "../helperFunctions/isTokenValid";
 
 interface AuthState {
-  token: string | null;
+  isAutharized: boolean;
 }
 
-const initialState: AuthState = {
-  token: localStorage.getItem("token"),
-};
+function getInitialAuthState(): AuthState {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
+  if (accessToken && isTokenValid(accessToken)) return { isAutharized: true };
+
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+  if (refreshToken && isTokenValid(refreshToken)) return { isAutharized: true };
+
+  return { isAutharized: false };
+}
+
+const initialState: AuthState = getInitialAuthState();
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
-      localStorage.setItem("token", state.token);
-    },
     logout: (state) => {
-      state.token = null;
-      localStorage.removeItem("token");
+      state.isAutharized = false;
+    },
+    login: (state) => {
+      state.isAutharized = true;
     },
   },
 });

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Switch } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
 
 import type { RootState } from "../store/store";
 import { toggleTheme } from "../store/themeSlice";
@@ -9,13 +10,9 @@ function ThemeSwitch() {
   const dispatch = useDispatch();
 
   return (
-    <>
-      <Switch
-        defaultChecked={theme == "light"}
-        onChange={() => dispatch(toggleTheme())}
-      />
-      {theme}
-    </>
+    <IconButton onClick={() => dispatch(toggleTheme())}>
+      {theme === "light" ? <LightModeOutlined /> : <DarkModeOutlined />}
+    </IconButton>
   );
 }
 

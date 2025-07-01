@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   FormControl,
   FormLabel,
@@ -10,18 +11,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
 
-import useToken from "../hooks/useToken";
 import validateEmail from "../helperFunctions/validateEmail";
-import { login } from "../store/authSlice";
 import SignInSwitch from "../components/SignInSwitch";
 import PasswordChecker from "../components/PasswordChecker";
+import useCheckAuth from "../hooks/useCheckAuth";
+import useRegister from "../hooks/useRegister";
 
 function Register() {
-  const token = useToken();
+  const isAutharized = useCheckAuth();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const { registerUser, error, isLoading } = useRegister();
 
   const [firstNameError, setFirstNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -55,12 +56,17 @@ function Register() {
       register = false;
     }
 
-    if (register) dispatch(login(email));
+    if (register) {
+      const userPayload = { firstName, email, password } as any;
+      if (lastName) userPayload.lastName = lastName;
+
+      registerUser(userPayload);
+    }
   };
 
   useEffect(() => {
-    if (token != null) navigate("/");
-  }, [token, navigate]);
+    if (isAutharized) navigate("/");
+  }, [isAutharized, navigate]);
 
   return (
     <Container maxWidth="sm">
@@ -112,14 +118,22 @@ function Register() {
             setSubmitDisabled={setSubmitDisabled}
             passwordRef={passwordRef}
           />
+          {error && (
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          )}
           <Button
             type="submit"
             variant="contained"
             fullWidth
             sx={{ mt: 1 }}
-            disabled={submitDisabled}
+            disabled={submitDisabled || isLoading}
           >
             Submit
+            {isLoading && (
+              <CircularProgress size={24} sx={{ position: "absolute" }} />
+            )}
           </Button>
         </Box>
       </Paper>

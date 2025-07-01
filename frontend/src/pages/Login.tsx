@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   FormControl,
   FormLabel,
@@ -13,15 +13,15 @@ import {
   Typography,
 } from "@mui/material";
 
-import useToken from "../hooks/useToken";
-import { login } from "../store/authSlice";
 import SignInSwitch from "../components/SignInSwitch";
 import validateEmail from "../helperFunctions/validateEmail";
+import useCheckAuth from "../hooks/useCheckAuth";
+import useLogin from "../hooks/useLogin";
 
 function Login() {
-  const token = useToken();
+  const isAutharized = useCheckAuth();
+  const { loginUser, error, isLoading } = useLogin();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [passError, setPassError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -41,8 +41,7 @@ function Login() {
     if (email === "") {
       setEmailError("Email is Required");
       authenticate = false;
-    }
-    if (!validateEmail(email)) {
+    } else if (!validateEmail(email)) {
       setEmailError("Invalid Email");
       authenticate = false;
     }
@@ -51,12 +50,12 @@ function Login() {
       authenticate = false;
     }
 
-    if (authenticate) dispatch(login(email));
+    if (authenticate) loginUser({ email, password });
   };
 
   useEffect(() => {
-    if (token != null) navigate("/");
-  }, [token, navigate]);
+    if (isAutharized) navigate("/");
+  }, [isAutharized, navigate]);
 
   return (
     <Container maxWidth="sm">
@@ -100,8 +99,22 @@ function Login() {
               helperText={passError}
             />
           </FormControl>
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 1 }}>
+          {error && (
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          )}
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 1 }}
+            disabled={isLoading}
+          >
             Submit
+            {isLoading && (
+              <CircularProgress size={24} sx={{ position: "absolute" }} />
+            )}
           </Button>
           <Link component="button" variant="body2" sx={{ mt: 1 }}>
             Forgot your password?
