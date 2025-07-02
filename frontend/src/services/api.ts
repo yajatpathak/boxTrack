@@ -5,6 +5,7 @@ import isTokenValid from "../helperFunctions/isTokenValid";
 import store from "../store/store";
 import { logout } from "../store/authSlice";
 import { sendAlert } from "../store/alertSlice";
+import { clearUser } from "../store/userSlice";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -26,6 +27,7 @@ api.interceptors.request.use(async (config) => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     store.dispatch(logout());
+    store.dispatch(clearUser());
     store.dispatch(
       sendAlert({ message: "You were logged out.", severity: "error" })
     );
@@ -44,6 +46,7 @@ api.interceptors.request.use(async (config) => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     store.dispatch(logout());
+    store.dispatch(clearUser());
     store.dispatch(
       sendAlert({ message: "You were logged out.", severity: "error" })
     );

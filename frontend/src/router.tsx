@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ErrorPage from "./pages/ErrorPage";
+import Teams from "./pages/Teams";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Dashboard /> },
-      { path: "teams", element: <Dashboard /> },
+      { path: "teams", element: <Teams /> },
       { path: "inventory", element: <Dashboard /> },
       { path: "customers", element: <Dashboard /> },
       { path: "order-history", element: <Dashboard /> },

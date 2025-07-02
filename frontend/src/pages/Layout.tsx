@@ -23,7 +23,6 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import useCheckAuth from "../hooks/useCheckAuth";
 import SideBar from "../components/SideBar";
 import UserProfile from "../components/UserProfile";
-import useGetUser from "../hooks/useGetUser";
 
 const menuItems = [
   { text: "Dashboard", path: "/", icon: HomeOutlinedIcon },
@@ -47,17 +46,11 @@ function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { getUserDetails } = useGetUser();
-
   const sidebarWidth = 240;
 
   useEffect(() => {
     if (!isAuthorized) navigate("/login");
   }, [isAuthorized, navigate]);
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
 
   return (
     <>
