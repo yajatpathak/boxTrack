@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models.query import QuerySet
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request

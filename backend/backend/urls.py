@@ -10,5 +10,6 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
     path("api/user/details/", UserDetailView.as_view(), name="user-detail"),
     path("api/user/list/", UserListView.as_view(), name="user-list"),
+    path("api/customers/", include("customer.urls")),
     path("api-auth/", include("rest_framework.urls")),
 ]

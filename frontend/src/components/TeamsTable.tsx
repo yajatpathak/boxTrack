@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 
 import useGetUserList from "../hooks/useGetUserList";
-import { Paper } from "@mui/material";
 
 interface TeamsTableProps {
   is_active: boolean | undefined;
@@ -21,26 +20,24 @@ function TeamsTabel({ is_active, search }: TeamsTableProps) {
   }, [page, is_active, search]);
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "first_name", headerName: "First Name", width: 150 },
-    { field: "last_name", headerName: "Last Name", width: 150 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "is_active", headerName: "Active", width: 100, type: "boolean" },
+    { field: "id", headerName: "ID", flex: 1 },
+    { field: "first_name", headerName: "First Name", flex: 2 },
+    { field: "last_name", headerName: "Last Name", flex: 2 },
+    { field: "email", headerName: "Email", flex: 3 },
+    { field: "is_active", headerName: "Active", type: "boolean", flex: 1 },
   ];
 
   return (
-    <Paper elevation={1} sx={{ height: 500, width: "100%" }}>
-      <DataGrid
-        rows={userList}
-        columns={columns}
-        loading={isLoading}
-        rowCount={totalCount}
-        paginationMode="server"
-        pageSizeOptions={[10]}
-        onPaginationModelChange={(model) => setPage(model.page)}
-        paginationModel={{ page, pageSize }}
-      />
-    </Paper>
+    <DataGrid
+      rows={userList}
+      columns={columns}
+      loading={isLoading}
+      rowCount={totalCount}
+      paginationMode="server"
+      pageSizeOptions={[10]}
+      onPaginationModelChange={(model) => setPage(model.page)}
+      paginationModel={{ page, pageSize }}
+    />
   );
 }
 
