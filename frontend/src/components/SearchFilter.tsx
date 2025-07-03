@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 interface SearchFilterProps {
@@ -25,11 +25,18 @@ function SearchFilter({ setSearch }: SearchFilterProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      noValidate
+      sx={{ width: 300 }}
+    >
       <TextField
+        fullWidth
         error={lenError}
         label="Search"
         value={input}
+        size="small"
         helperText={lenError ? "Search should at least have 3 characters." : ""}
         onChange={(e) => setInput(e.target.value)}
         slotProps={{
@@ -44,7 +51,7 @@ function SearchFilter({ setSearch }: SearchFilterProps) {
           },
         }}
       />
-    </form>
+    </Box>
   );
 }
 

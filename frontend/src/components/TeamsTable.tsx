@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 
 import useGetUserList from "../hooks/useGetUserList";
+import { Paper } from "@mui/material";
 
 interface TeamsTableProps {
   is_active: boolean | undefined;
@@ -28,16 +29,18 @@ function TeamsTabel({ is_active, search }: TeamsTableProps) {
   ];
 
   return (
-    <DataGrid
-      rows={userList}
-      columns={columns}
-      loading={isLoading}
-      rowCount={totalCount}
-      paginationMode="server"
-      pageSizeOptions={[10]}
-      onPaginationModelChange={(model) => setPage(model.page)}
-      paginationModel={{ page, pageSize }}
-    />
+    <Paper elevation={1} sx={{ height: 500, width: "100%" }}>
+      <DataGrid
+        rows={userList}
+        columns={columns}
+        loading={isLoading}
+        rowCount={totalCount}
+        paginationMode="server"
+        pageSizeOptions={[10]}
+        onPaginationModelChange={(model) => setPage(model.page)}
+        paginationModel={{ page, pageSize }}
+      />
+    </Paper>
   );
 }
 

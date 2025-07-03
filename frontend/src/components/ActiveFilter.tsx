@@ -23,13 +23,13 @@ function ActiveFilter({ is_active, setIs_active }: ActiveFilterProps) {
   };
 
   const renderIcon = () => {
-    if (is_active === true) return <CheckBoxIcon />;
+    if (is_active === true) return <CheckBoxIcon color="success" />;
     if (is_active === false) return <DisabledByDefaultIcon color="error" />;
     return <IndeterminateCheckBoxIcon />;
   };
 
   return (
-    <Button variant="text" onClick={handelToggle} startIcon={renderIcon()}>
+    <Button variant="outlined" onClick={handelToggle} startIcon={renderIcon()}>
       Active
     </Button>
   );
